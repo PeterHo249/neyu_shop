@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/img/placeholder.png'),
+            backgroundImage: NetworkImage('assets/img/placeholder.png'),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -111,9 +111,7 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.symmetric(
                 horizontal: 5.0,
               ),
-              child: Image(
-                image: AssetImage('assets/img/placeholder_wide.png'),
-              ),
+              child: Image.network('assets/img/placeholder_wide.png'),
             );
           },
         );
