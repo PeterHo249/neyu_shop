@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:neyu_shop/utils/action_data.dart';
 
@@ -11,7 +12,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: Placeholder(),
+      body: _buildHomepageContent(context),
     );
   }
 
@@ -29,6 +30,9 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'NEYU Shop',
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           ),
         ],
@@ -55,15 +59,85 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildAppBarAction(BuildContext context, ActionData actionData) {
     return InkWell(
-      onTap: () {},
+      onTap: actionData.action,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
           child: MediaQuery.of(context).size.width > 500.0
-              ? Text(actionData.title)
-              : Icon(actionData.icon),
+              ? Text(
+                  actionData.title,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                )
+              : Icon(
+                  actionData.icon,
+                  color: Colors.black,
+                ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHomepageContent(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            // Corousel
+            _buildCarouselHeader(context),
+            // Main content
+            _buildMainContent(context),
+            // Footer
+            _buildFooter(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCarouselHeader(BuildContext context) {
+    return CarouselSlider(
+      items: [1, 2, 3, 4].map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(
+                horizontal: 5.0,
+              ),
+              child: Image(
+                image: AssetImage('img/placeholder_wide.png'),
+              ),
+            );
+          },
+        );
+      }).toList(),
+      options: CarouselOptions(
+        height: 400.0,
+        aspectRatio: 16 / 9,
+      ),
+    );
+  }
+
+  Widget _buildMainContent(BuildContext context) {
+    return Container(
+      color: Colors.blue.shade100,
+      width: 500,
+      height: 500,
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      color: Colors.blue.shade400,
+      width: 500,
+      height: 500,
     );
   }
 }
