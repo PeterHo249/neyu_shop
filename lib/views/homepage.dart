@@ -111,14 +111,22 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.symmetric(
                 horizontal: 5.0,
               ),
-              child: Image.network('img/placeholder_wide.png'),
+              child: Image.network(
+                'img/placeholder_wide.png',
+                fit: BoxFit.fill,
+              ),
             );
           },
         );
       }).toList(),
       options: CarouselOptions(
-        height: 400.0,
-        aspectRatio: 16 / 9,
+        height: 300.0,
+        viewportFraction: 0.9,
+        autoPlay: true,
+        autoPlayInterval: Duration(
+          seconds: 3,
+        ),
+        enlargeCenterPage: true,
       ),
     );
   }
@@ -136,11 +144,96 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFooter(BuildContext context) {
     return Container(
-      color: Colors.blue.shade400,
-      width: 500,
-      height: 500,
-      child: Text(
-        'This is footer',
+      color: Colors.amber.shade200,
+      width: MediaQuery.of(context).size.width,
+      height: 250,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'img/placeholder.png',
+                    ),
+                    radius: 50,
+                  ),
+                  Text(
+                    'NEYU Shop',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.0,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'NEYU Shop',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                  Text(
+                    'Slogan',
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Icon(
+                          Icons.phone,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        '09xxxxxxx',
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Icon(
+                          Icons.public,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        'web_address.com',
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
