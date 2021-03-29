@@ -130,6 +130,9 @@ class _HomePageState extends State<HomePage> {
       color: Colors.blue.shade100,
       width: 500,
       height: 500,
+      child: Text(
+        'This is product list',
+      ),
     );
   }
 
@@ -138,6 +141,9 @@ class _HomePageState extends State<HomePage> {
       color: Colors.blue.shade400,
       width: 500,
       height: 500,
+      child: Text(
+        'This is footer',
+      ),
     );
   }
 }
