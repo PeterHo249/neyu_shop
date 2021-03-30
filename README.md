@@ -1,16 +1,21 @@
-# neyu_shop
+# NEYU Shop
 
-A new Flutter project.
+## How to build
 
-## Getting Started
+1. Run `flutter pub get` to get information and packages.
+2. Run `flutter build web --release --no-sound-null-safety` to build web app.
 
-This project is a starting point for a Flutter application.
+## How to setup Codemagic
 
-A few resources to get you started if this is your first Flutter project:
+Setup Codemagic CI/CD to auto run build and deploy to Google Hosting.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+1. Get Firebase CI API key. Run `firebase login:ci` to login and get the api key string on command prompt.
+2. Encrypt the api key with Codemagic Encrypt environment variables tool.
+3. In Environment Variables section, add `FIREBASE_TOKEN` with encrypted token value.
+4. Enable web build in Build section, addiction args for command line is `--no-sound-null-safety`.
+5. Add Post Build script with `firebase deploy --token "$FIREBASE_TOKEN"`
+6. Setup auto trigger in Trigger section with pattern watch on master branch and trigger on push.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Add assets for web
+
+Note that assets for web is something weird. So add the assets path in pubspec.yaml as normal. To using in code, please use `NetworkImage` or `Image.network` widget with path `assets/<path to asset in pubspec.yaml>`.
