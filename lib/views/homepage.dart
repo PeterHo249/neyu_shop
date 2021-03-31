@@ -19,24 +19,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHomepageContent(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            // Corousel
-            BannerCarousel(),
-            // Main content
-            ProductGrid(),
-            // Footer
-            InformationFooter(),
-          ],
-        ),
-      ),
+    return CustomScrollView(
+      slivers: [
+        // Corousel
+        BannerCarousel(),
+        // Main content
+        ProductGrid(),
+        // Footer
+        InformationFooter(),
+      ],
     );
   }
 }
