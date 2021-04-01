@@ -81,18 +81,17 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WindowSizeType windowType =
-        getWindowSizeType(MediaQuery.of(context).size.width);
+    WindowType windowType = getWindowType(MediaQuery.of(context).size.width);
 
     var axisCount = 3;
     switch (windowType) {
-      case WindowSizeType.large:
+      case WindowType.large:
         axisCount = 5;
         break;
-      case WindowSizeType.medium:
+      case WindowType.medium:
         axisCount = 4;
         break;
-      case WindowSizeType.small:
+      case WindowType.small:
         axisCount = 3;
         break;
     }

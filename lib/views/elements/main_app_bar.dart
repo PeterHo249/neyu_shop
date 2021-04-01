@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neyu_shop/utils/action_data.dart';
+import 'package:neyu_shop/utils/window_breakpoint.dart';
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
   MainAppBar()
@@ -62,7 +63,8 @@ class _MainAppBarState extends State<MainAppBar> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
-          child: MediaQuery.of(context).size.width > 500.0
+          child: getWindowType(MediaQuery.of(context).size.width) !=
+                  WindowType.small
               ? Text(
                   actionData.title,
                   style: TextStyle(
