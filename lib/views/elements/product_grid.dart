@@ -7,73 +7,73 @@ class ProductGrid extends StatelessWidget {
   final productList = [
     Product(
       '1',
-      'assets/img/placeholder.png',
+      'assets/img/product_1.jpg',
       'product 1',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '2',
+      'assets/img/product_2.jpg',
       'product 2',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '3',
+      'assets/img/product_1.jpg',
       'product 3',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '4',
+      'assets/img/product_2.jpg',
       'product 4',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '5',
+      'assets/img/product_1.jpg',
       'product 5',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '6',
+      'assets/img/product_2.jpg',
       'product 6',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '7',
+      'assets/img/product_1.jpg',
       'product 7',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '8',
+      'assets/img/product_2.jpg',
       'product 8',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '9',
+      'assets/img/product_1.jpg',
       'product 9',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '10',
+      'assets/img/product_2.jpg',
       'product 10',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '11',
+      'assets/img/product_1.jpg',
       'product 11',
       500000,
     ),
     Product(
-      '1',
-      'assets/img/placeholder.png',
+      '12',
+      'assets/img/product_2.jpg',
       'product 12',
       500000,
     ),
@@ -86,13 +86,13 @@ class ProductGrid extends StatelessWidget {
     var axisCount = 3;
     switch (windowType) {
       case WindowType.large:
-        axisCount = 5;
-        break;
-      case WindowType.medium:
         axisCount = 4;
         break;
-      case WindowType.small:
+      case WindowType.medium:
         axisCount = 3;
+        break;
+      case WindowType.small:
+        axisCount = 2;
         break;
     }
 
@@ -102,6 +102,7 @@ class ProductGrid extends StatelessWidget {
         crossAxisCount: axisCount,
         mainAxisSpacing: 20.0,
         crossAxisSpacing: 20.0,
+        childAspectRatio: 9 / 13,
         children: productList.map((product) {
           return ProductTile(product: product);
         }).toList(),

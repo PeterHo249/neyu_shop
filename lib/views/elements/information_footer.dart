@@ -8,6 +8,7 @@ class InformationFooter extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 230,
+        color: Colors.grey[200],
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
