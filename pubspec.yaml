@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   carousel_slider: ^3.0.0
   json_annotation: ^4.0.1
+  badges: ^1.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -50,6 +51,13 @@ flutter:
   assets:
     - img/placeholder.png
     - img/placeholder_wide.png
+    - img/banner_1.png
+    - img/banner_2.png
+    - img/icon_1.png
+    - img/icon_2.png
+    - img/icon_3.png
+    - img/product_1.jpg
+    - img/product_2.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -76,3 +84,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: ChakraPetch
+      fonts:
+        - asset: fonts/ChakraPetch-Regular.ttf

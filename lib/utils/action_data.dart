@@ -20,7 +20,13 @@ class ActionDataEnum {
     action: () => print('This is contact action'),
   );
 
+  static final cart = ActionData(
+    icon: Icons.shopping_cart_outlined,
+    title: "Cart",
+    action: () => print('This is cart action'),
+  );
+
   static final actionDatas = [
-    contact,
+    cart,
   ];
 }
