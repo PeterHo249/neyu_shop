@@ -110,7 +110,7 @@ class ProductDetailPage extends StatelessWidget {
               color: Colors.black,
               fontSize: 18.0,
             ),
-            maxLines: widgetWidth - 100 > 300 ? 15 : 7,
+            maxLines: widgetWidth - 100 > 300 ? 10 : 7,
             overflow: TextOverflow.ellipsis,
           ),
         ),
