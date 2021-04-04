@@ -8,6 +8,7 @@ void main() {
 class MainApp extends StatelessWidget {
   final theme = ThemeData(
     backgroundColor: Colors.amber.shade600,
+    scaffoldBackgroundColor: Colors.white,
     fontFamily: 'ChakraPetch',
   );
 

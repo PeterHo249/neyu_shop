@@ -3,8 +3,6 @@ import 'package:neyu_shop/utils/constant.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
 
 class ServiceRow extends StatelessWidget {
-  const ServiceRow({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
