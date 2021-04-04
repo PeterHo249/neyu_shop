@@ -6,6 +6,7 @@ import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
 import 'package:neyu_shop/views/elements/amount_picker.dart';
 import 'package:neyu_shop/views/elements/information_footer.dart';
 import 'package:neyu_shop/views/elements/main_app_bar.dart';
+import 'package:neyu_shop/views/elements/product_tile.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -26,6 +27,7 @@ class ProductDetailPage extends StatelessWidget {
       slivers: [
         MainAppBar(),
         _buildProductDetailContent(context),
+        ..._buildOtherProductPane(context),
         InformationFooter(),
       ],
     );
@@ -141,5 +143,64 @@ class ProductDetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildOtherProductPane(BuildContext context) {
+    var tileWidth =
+        MediaQuery.of(context).size.width / getTileCountOnRow(context);
+    return [
+      SliverToBoxAdapter(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                'Other Products',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Divider(
+                  indent: 50.0,
+                  endIndent: 50.0,
+                  thickness: 2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: tileWidth * 13 / 9 + 20.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: productList.map(
+              (p) {
+                if (p.id == product.id)
+                  return Container(
+                    width: 0.0,
+                    height: tileWidth * 13 / 9,
+                  );
+                return Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: ProductTile(product: p),
+                  width: tileWidth,
+                  height: tileWidth * 13 / 9,
+                );
+              },
+            ).toList(),
+          ),
+        ),
+      ),
+    ];
   }
 }
