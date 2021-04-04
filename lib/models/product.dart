@@ -8,6 +8,7 @@ class Product {
     this.imageUrl,
     this.name,
     this.price,
+    this.description,
   );
 
   String id;
@@ -16,6 +17,8 @@ class Product {
   String name;
   @JsonKey(defaultValue: 0.0)
   double price;
+  @JsonKey(defaultValue: "")
+  String description;
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);

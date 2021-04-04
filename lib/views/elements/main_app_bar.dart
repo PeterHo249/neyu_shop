@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:neyu_shop/utils/action_data.dart';
 import 'package:neyu_shop/utils/constant.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
+import 'package:neyu_shop/views/cart_page.dart';
+import 'package:neyu_shop/views/elements/FadePageRoute.dart';
 import 'package:neyu_shop/views/elements/cart_action_button.dart';
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -26,36 +28,52 @@ class _MainAppBarState extends State<MainAppBar> {
       backgroundColor: Colors.white,
       collapsedHeight: appBarHeight,
       toolbarHeight: appBarHeight,
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
       flexibleSpace: Align(
         alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: EdgeInsets.only(left: screenWidth * 0.08),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(logoPath),
-                radius: 30.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  shopName,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: screenWidth * 0.08),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(logoPath),
+                  radius: 30.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    shopName,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
       actions: [
         CartActionButton(
+          action: () {
+            Navigator.of(context).push(
+              FadePageRoute(
+                CartPage(),
+              ),
+            );
+          },
           productCount: 3,
         ),
         // ...ActionDataEnum.actionDatas

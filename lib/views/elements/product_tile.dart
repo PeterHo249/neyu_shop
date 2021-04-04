@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:neyu_shop/models/product.dart';
+import 'package:neyu_shop/views/elements/FadePageRoute.dart';
+import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
+import 'package:neyu_shop/views/product_detail.dart';
 
 class ProductTile extends StatefulWidget {
-  const ProductTile({Key? key, required this.product}) : super(key: key);
+  const ProductTile({required this.product});
 
   final Product product;
 
@@ -26,93 +29,81 @@ class _ProductTileState extends State<ProductTile> {
       ),
     ).output.withoutFractionDigits;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 3,
-            blurRadius: 5,
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          FadePageRoute(
+            ProductDetailPage(
+              product: product,
+            ),
           ),
-        ],
-      ),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          var imageSize = constraints.maxWidth * 0.65;
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Image.network(
-                product.imageUrl,
-                height: imageSize,
-                width: imageSize,
-                fit: BoxFit.fill,
-              ),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                width: constraints.maxWidth,
-                child: Text(
-                  product.name,
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.w400,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            var imageSize = constraints.maxWidth * 0.65;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Hero(
+                  tag: product.id,
+                  child: Image.network(
+                    product.imageUrl,
+                    height: imageSize,
+                    width: imageSize,
+                    fit: BoxFit.fill,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              Container(
-                width: constraints.maxWidth,
-                child: Text(
-                  '$priceString',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w200,
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  width: constraints.maxWidth,
+                  child: Text(
+                    product.name,
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    print('add to cart');
+                Container(
+                  width: constraints.maxWidth,
+                  child: Text(
+                    '$priceString',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w200,
+                      color: Colors.amber[700],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                AddToCartButton(
+                  action: () {
+                    print("Add to cart button pressed");
                   },
-                  child: Text('Add to cart'),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                      EdgeInsets.all(
-                        15.0,
-                      ),
-                    ),
-                    textStyle: MaterialStateProperty.all(TextStyle(
-                      fontSize: 16.0,
-                    )),
-                    foregroundColor: MaterialStateProperty.all(
-                      Colors.white,
-                    ),
-                    backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) {
-                        if (states.contains(MaterialState.hovered))
-                          return Colors.amber[400];
-                        if (states.contains(MaterialState.focused) ||
-                            states.contains(MaterialState.pressed))
-                          return Colors.amber[60];
-                        return Colors.amber;
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

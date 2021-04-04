@@ -4,10 +4,9 @@ import 'package:neyu_shop/utils/window_breakpoint.dart';
 
 class CartActionButton extends StatefulWidget {
   CartActionButton({
-    Key? key,
     this.action,
     this.productCount = 0,
-  }) : super(key: key);
+  });
 
   final void Function()? action;
   final int productCount;
