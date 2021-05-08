@@ -15,4 +15,10 @@ class OrderEntry {
   factory OrderEntry.fromJson(Map<String, dynamic> json) =>
       _$OrderEntryFromJson(json);
   Map<String, dynamic> toJson() => _$OrderEntryToJson(this);
+
+  double computeCost() => product.price * quality;
+
+  void addQuality(int amount) {
+    this.quality += amount;
+  }
 }

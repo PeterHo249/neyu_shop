@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/product.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
 import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
@@ -7,6 +11,8 @@ import 'package:neyu_shop/views/elements/amount_picker.dart';
 import 'package:neyu_shop/views/elements/information_footer.dart';
 import 'package:neyu_shop/views/elements/main_app_bar.dart';
 import 'package:neyu_shop/views/elements/product_tile.dart';
+
+import 'elements/loading_indicator.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -181,26 +187,57 @@ class ProductDetailPage extends StatelessWidget {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: tileWidth * 13 / 9 + 20.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: productList.map(
-              (p) {
-                if (p.id == product.id)
-                  return Container(
-                    width: 0.0,
-                    height: tileWidth * 13 / 9,
-                  );
-                return Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: ProductTile(product: p),
-                  width: tileWidth,
-                  height: tileWidth * 13 / 9,
+          child: StreamBuilder(
+            stream: DataProvider.instance.getProductList(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return SliverToBoxAdapter(
+                  child: LoadingIndicator(),
                 );
-              },
-            ).toList(),
+              }
+
+              List<Product> products = snapshot.data!.docs
+                  .map(
+                    (docSnapshot) => Product.fromJson(
+                      json.decode(
+                        json.encode(
+                          docSnapshot.data(),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList();
+
+              return buildOtherProductList(context, products, tileWidth);
+            },
           ),
         ),
       ),
     ];
+  }
+
+  Widget buildOtherProductList(
+    BuildContext context,
+    List<Product> products,
+    double tileWidth,
+  ) {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: products.map(
+        (p) {
+          if (p.id == product.id)
+            return Container(
+              width: 0.0,
+              height: tileWidth * 13 / 9,
+            );
+          return Container(
+            padding: EdgeInsets.all(10.0),
+            child: ProductTile(product: p),
+            width: tileWidth,
+            height: tileWidth * 13 / 9,
+          );
+        },
+      ).toList(),
+    );
   }
 }

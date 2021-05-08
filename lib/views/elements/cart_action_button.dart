@@ -1,46 +1,48 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
+import 'package:provider/provider.dart';
 
 class CartActionButton extends StatefulWidget {
   CartActionButton({
     this.action,
-    this.productCount = 0,
   });
 
   final void Function()? action;
-  final int productCount;
 
   @override
-  _CartActionButtonState createState() =>
-      _CartActionButtonState(action, productCount);
+  _CartActionButtonState createState() => _CartActionButtonState(action);
 }
 
 class _CartActionButtonState extends State<CartActionButton> {
-  _CartActionButtonState(this.action, this.productCount);
+  _CartActionButtonState(this.action);
 
-  int productCount;
   void Function()? action;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: action,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15.0,
-        ),
-        child: Center(
-          child: getWindowType(MediaQuery.of(context).size.width) !=
-                  WindowType.small
-              ? Text(
-                  'Cart ($productCount)',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25.0,
-                  ),
-                )
-              : _buildCartIcon(productCount),
+    return ChangeNotifierProvider.value(
+      value: DataProvider.instance.currentOrder,
+      child: InkWell(
+        onTap: action,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15.0,
+          ),
+          child: Center(
+            child: getWindowType(MediaQuery.of(context).size.width) !=
+                    WindowType.small
+                ? Text(
+                    'Cart (${DataProvider.instance.currentOrder.computeAmount()})',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25.0,
+                    ),
+                  )
+                : _buildCartIcon(
+                    DataProvider.instance.currentOrder.computeAmount()),
+          ),
         ),
       ),
     );
