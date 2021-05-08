@@ -14,12 +14,19 @@ import 'package:neyu_shop/views/elements/product_tile.dart';
 
 import 'elements/loading_indicator.dart';
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({
     required this.product,
   });
 
   final Product product;
+
+  @override
+  _ProductDetailPageState createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  int amount = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +56,9 @@ class ProductDetailPage extends StatelessWidget {
       crossAxisSpacing: 10.0,
       children: [
         Hero(
-          tag: product.id,
+          tag: widget.product.id,
           child: Image.network(
-            product.imageUrl,
+            widget.product.imageUrl,
             fit: BoxFit.fill,
           ),
         ),
@@ -66,7 +73,7 @@ class ProductDetailPage extends StatelessWidget {
             ? MediaQuery.of(context).size.width
             : MediaQuery.of(context).size.width * 0.5;
     var priceString = FlutterMoneyFormatter(
-      amount: product.price,
+      amount: widget.product.price,
       settings: MoneyFormatterSettings(
         thousandSeparator: '.',
         decimalSeparator: ',',
@@ -82,7 +89,7 @@ class ProductDetailPage extends StatelessWidget {
         Container(
           width: widgetWidth,
           child: Text(
-            product.name,
+            widget.product.name,
             style: TextStyle(
               fontSize: 40.0,
               fontWeight: FontWeight.bold,
@@ -111,7 +118,7 @@ class ProductDetailPage extends StatelessWidget {
         Container(
           width: widgetWidth,
           child: Text(
-            product.description,
+            widget.product.description,
             style: TextStyle(
               color: Colors.black,
               fontSize: 18.0,
@@ -137,13 +144,16 @@ class ProductDetailPage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 30.0),
             child: AmountPicker(
               onValueChanged: (value) {
-                print('Amount change');
+                amount = value;
               },
             ),
           ),
           AddToCartButton(
             action: () {
-              print('Add to cart button pressed');
+              DataProvider.instance.currentOrder.addItem(
+                product: widget.product,
+                amount: amount,
+              );
             },
           ),
         ],
@@ -225,7 +235,7 @@ class ProductDetailPage extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       children: products.map(
         (p) {
-          if (p.id == product.id)
+          if (p.id == widget.product.id)
             return Container(
               width: 0.0,
               height: tileWidth * 13 / 9,

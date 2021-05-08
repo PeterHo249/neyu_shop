@@ -82,6 +82,8 @@ class Order extends ChangeNotifier {
       }
     }
 
+    totalValue = computeCost();
+
     notifyListeners();
   }
 
@@ -100,6 +102,8 @@ class Order extends ChangeNotifier {
       }
     }
 
+    totalValue = computeCost();
+
     notifyListeners();
   }
 
@@ -110,6 +114,8 @@ class Order extends ChangeNotifier {
       });
     }
 
+    totalValue = computeCost();
+
     notifyListeners();
   }
 
@@ -119,6 +125,8 @@ class Order extends ChangeNotifier {
     } else {
       entries = [];
     }
+
+    totalValue = computeCost();
 
     notifyListeners();
   }

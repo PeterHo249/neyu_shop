@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
-import 'package:neyu_shop/utils/window_breakpoint.dart';
+import 'package:neyu_shop/models/order.dart';
 import 'package:provider/provider.dart';
 
 class CartActionButton extends StatefulWidget {
@@ -24,26 +24,20 @@ class _CartActionButtonState extends State<CartActionButton> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: DataProvider.instance.currentOrder,
-      child: InkWell(
-        onTap: action,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15.0,
-          ),
-          child: Center(
-            child: getWindowType(MediaQuery.of(context).size.width) !=
-                    WindowType.small
-                ? Text(
-                    'Cart (${DataProvider.instance.currentOrder.computeAmount()})',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25.0,
-                    ),
-                  )
-                : _buildCartIcon(
-                    DataProvider.instance.currentOrder.computeAmount()),
-          ),
-        ),
+      child: Consumer<Order>(
+        builder: (context, model, _) {
+          return InkWell(
+            onTap: action,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+              ),
+              child: Center(
+                child: _buildCartIcon(model.computeAmount()),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

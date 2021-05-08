@@ -62,4 +62,11 @@ class DataProvider {
   void removeItem({required OrderEntry item}) {
     currentOrder.removeItem(item: item);
   }
+
+  Stream<DocumentSnapshot> getCustomerInfo(String phoneNumber) {
+    return FirebaseFirestore.instance
+        .collection('customers')
+        .doc(phoneNumber)
+        .snapshots();
+  }
 }
