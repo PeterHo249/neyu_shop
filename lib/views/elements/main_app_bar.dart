@@ -74,7 +74,6 @@ class _MainAppBarState extends State<MainAppBar> {
               ),
             );
           },
-          productCount: 3,
         ),
         // ...ActionDataEnum.actionDatas
         //     .asMap()

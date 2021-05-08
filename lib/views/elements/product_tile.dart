@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/product.dart';
 import 'package:neyu_shop/views/elements/FadePageRoute.dart';
 import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
@@ -97,7 +98,10 @@ class _ProductTileState extends State<ProductTile> {
                 ),
                 AddToCartButton(
                   action: () {
-                    print("Add to cart button pressed");
+                    DataProvider.instance.currentOrder.addItem(
+                      product: product,
+                      amount: 1,
+                    );
                   },
                 )
               ],
