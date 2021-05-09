@@ -1,10 +1,9 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/address.dart';
 import 'package:neyu_shop/models/customer.dart';
+import 'package:neyu_shop/views/elements/FadePageRoute.dart';
+import 'package:neyu_shop/views/order_success.dart';
 
 class CustomerForm extends StatefulWidget {
   @override
@@ -12,7 +11,16 @@ class CustomerForm extends StatefulWidget {
 }
 
 class _CustomerFormState extends State<CustomerForm> {
-  String phoneNumber = "initdata";
+  List<Customer> customers = [];
+  Customer currentCustomer = Customer(
+    "",
+    "",
+    Address(
+      "",
+      "",
+      "",
+    ),
+  );
 
   var phoneNumberController = TextEditingController();
   var nameController = TextEditingController();
@@ -20,82 +28,122 @@ class _CustomerFormState extends State<CustomerForm> {
   var districtController = TextEditingController();
   var locatedPartController = TextEditingController();
 
+  var formState = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    DataProvider.instance.getCustomers().then(
+      (value) {
+        customers = value;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    nameController.text = currentCustomer.name;
+    provinceController.text = currentCustomer.address.province;
+    districtController.text = currentCustomer.address.district;
+    locatedPartController.text = currentCustomer.address.locatedPart;
+
     return Form(
-      key: widget.key,
-      child: StreamBuilder(
-        stream: DataProvider.instance.getCustomerInfo(phoneNumber),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          Customer customer;
-          if (!snapshot.hasData) {
-            customer = Customer(
-              phoneNumber,
-              "",
-              Address(
-                "",
-                "",
-                "",
-              ),
-            );
-          } else {
-            customer = Customer.fromJson(
-              json.decode(
-                json.encode(snapshot.data!.data()),
-              ),
-            );
-          }
+      key: formState,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: phoneNumberController,
+            decoration: InputDecoration(
+              labelText: "Phone number",
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              if (value.length == 10 && value != currentCustomer.phoneNumber) {
+                setState(
+                  () {
+                    currentCustomer = customers.firstWhere(
+                      (customer) {
+                        return customer.phoneNumber == value;
+                      },
+                      orElse: () => Customer(
+                        "",
+                        "",
+                        Address(
+                          "",
+                          "",
+                          "",
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+          TextFormField(
+            controller: nameController,
+            decoration: InputDecoration(
+              labelText: "Name",
+            ),
+            textCapitalization: TextCapitalization.words,
+          ),
+          TextFormField(
+            controller: provinceController,
+            decoration: InputDecoration(
+              labelText: "Province",
+            ),
+          ),
+          TextFormField(
+            controller: districtController,
+            decoration: InputDecoration(
+              labelText: "District",
+            ),
+          ),
+          TextFormField(
+            controller: locatedPartController,
+            decoration: InputDecoration(
+              labelText: "Street",
+            ),
+          ),
+          buildSubmitButton(context),
+        ],
+      ),
+    );
+  }
 
-          nameController.text = customer.name;
-          provinceController.text = customer.address.province;
-          districtController.text = customer.address.district;
-          locatedPartController.text = customer.address.locatedPart;
-
-          return Column(
-            children: [
-              TextFormField(
-                controller: phoneNumberController,
-                decoration: InputDecoration(
-                  labelText: "Phone number",
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  print("data changed $value");
-                  if (value.length == 10 && value != phoneNumber) {
-                    setState(() {
-                      phoneNumber = value;
-                    });
-                  }
-                },
-              ),
-              TextFormField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: "Name",
-                ),
-                textCapitalization: TextCapitalization.words,
-              ),
-              TextFormField(
-                controller: provinceController,
-                decoration: InputDecoration(
-                  labelText: "Province",
-                ),
-              ),
-              TextFormField(
-                controller: districtController,
-                decoration: InputDecoration(
-                  labelText: "District",
-                ),
-              ),
-              TextFormField(
-                controller: locatedPartController,
-                decoration: InputDecoration(
-                  labelText: "Street",
-                ),
-              ),
-            ],
-          );
-        },
+  Widget buildSubmitButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        print("Summit form");
+        // TODO: Implement submit order here
+        Navigator.of(context).push(
+          FadePageRoute(
+            SuccessOrder(),
+          ),
+        );
+      },
+      child: Text('Order'),
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(
+          EdgeInsets.all(
+            15.0,
+          ),
+        ),
+        textStyle: MaterialStateProperty.all(TextStyle(
+          fontSize: 16.0,
+        )),
+        foregroundColor: MaterialStateProperty.all(
+          Colors.white,
+        ),
+        backgroundColor: MaterialStateProperty.resolveWith(
+          (states) {
+            if (states.contains(MaterialState.hovered))
+              return Colors.amber[400];
+            if (states.contains(MaterialState.focused) ||
+                states.contains(MaterialState.pressed)) return Colors.amber[60];
+            return Colors.amber;
+          },
+        ),
       ),
     );
   }

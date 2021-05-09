@@ -69,4 +69,20 @@ class DataProvider {
         .doc(phoneNumber)
         .snapshots();
   }
+
+  Future<List<Customer>> getCustomers() async {
+    var customerInfos =
+        await FirebaseFirestore.instance.collection('customers').get();
+    return customerInfos.docs
+        .map(
+          (info) => Customer.fromJson(
+            json.decode(
+              json.encode(
+                info.data(),
+              ),
+            ),
+          ),
+        )
+        .toList();
+  }
 }

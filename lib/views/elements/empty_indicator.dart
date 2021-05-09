@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class EmptyDataIndicator extends StatelessWidget {
   final String message;
   final IconData icon;
+  final Widget? child;
 
   const EmptyDataIndicator({
     required this.message,
     this.icon = Icons.error_outline,
+    this.child,
   });
 
   @override
@@ -31,6 +33,10 @@ class EmptyDataIndicator extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: child ?? Container(),
         ),
       ],
     );
