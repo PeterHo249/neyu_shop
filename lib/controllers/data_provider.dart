@@ -63,10 +63,10 @@ class DataProvider {
     currentOrder.removeItem(item: item);
   }
 
-  Stream<DocumentSnapshot> getCustomerInfo(String phoneNumber) {
+  Stream<DocumentSnapshot> getBlogpost(String blogId) {
     return FirebaseFirestore.instance
-        .collection('customers')
-        .doc(phoneNumber)
+        .collection('blogposts')
+        .doc(blogId)
         .snapshots();
   }
 
