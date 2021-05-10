@@ -58,23 +58,48 @@ class CartPage extends StatelessWidget {
       child: Consumer<Order>(
         builder: (context, order, _) {
           return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ...order.entries
-                    .map((entry) => OrderEntryTile(orderEntry: entry))
-                    .toList(),
-                Divider(),
-                Text("Total quality: ${order.computeAmount()}"),
-                Text("Total cost: ${order.totalValue}"),
-              ]);
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...order.entries
+                  .map((entry) => OrderEntryTile(orderEntry: entry))
+                  .toList(),
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      "Total quality: ${order.computeAmount()}",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    Text("-"),
+                    Text(
+                      "Total cost: ${order.totalValue}",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
         },
       ),
     );
   }
 
   Widget buildDeliveryForm(BuildContext context) {
-    return CustomerForm();
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: CustomerForm(),
+    );
   }
 }
