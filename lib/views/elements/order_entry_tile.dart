@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/order_entry.dart';
@@ -25,27 +26,46 @@ class OrderEntryTile extends StatelessWidget {
           orderEntry.product.imageUrl,
         ),
       ),
-      title: Text(orderEntry.product.name),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(priceString),
-          AmountPicker(
-            initialValue: orderEntry.quality,
-            onValueChanged: (value) {
-              DataProvider.instance.currentOrder
-                  .changeAmount(item: orderEntry, amount: value);
-            },
-          ),
-        ],
+      title: Text(
+        orderEntry.product.name,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18.0,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.cancel_outlined),
-        onPressed: () {
-          DataProvider.instance.removeItem(item: orderEntry);
-        },
+      subtitle: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              'Price: $priceString',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            AmountPicker(
+              initialValue: orderEntry.quality,
+              onValueChanged: (value) {
+                DataProvider.instance.currentOrder
+                    .changeAmount(item: orderEntry, amount: value);
+              },
+            ),
+          ],
+        ),
+      ),
+      trailing: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: IconButton(
+          icon: Icon(Icons.cancel_outlined),
+          onPressed: () {
+            DataProvider.instance.removeItem(item: orderEntry);
+          },
+        ),
       ),
     );
   }

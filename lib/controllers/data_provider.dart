@@ -63,10 +63,26 @@ class DataProvider {
     currentOrder.removeItem(item: item);
   }
 
-  Stream<DocumentSnapshot> getCustomerInfo(String phoneNumber) {
+  Stream<DocumentSnapshot> getBlogpost(String blogId) {
     return FirebaseFirestore.instance
-        .collection('customers')
-        .doc(phoneNumber)
+        .collection('blogposts')
+        .doc(blogId)
         .snapshots();
+  }
+
+  Future<List<Customer>> getCustomers() async {
+    var customerInfos =
+        await FirebaseFirestore.instance.collection('customers').get();
+    return customerInfos.docs
+        .map(
+          (info) => Customer.fromJson(
+            json.decode(
+              json.encode(
+                info.data(),
+              ),
+            ),
+          ),
+        )
+        .toList();
   }
 }
