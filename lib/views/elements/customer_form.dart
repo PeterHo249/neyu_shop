@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
-import 'package:neyu_shop/models/address.dart';
+import 'package:neyu_shop/models/address.dart' as custom;
 import 'package:neyu_shop/models/customer.dart';
+import 'package:neyu_shop/utils/utilities.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
 import 'package:neyu_shop/views/elements/FadePageRoute.dart';
+import 'package:neyu_shop/views/elements/my_elevated_button.dart';
 import 'package:neyu_shop/views/order_success.dart';
 
 class CustomerForm extends StatefulWidget {
@@ -16,7 +20,7 @@ class _CustomerFormState extends State<CustomerForm> {
   Customer currentCustomer = Customer(
     "",
     "",
-    Address(
+    custom.Address(
       "",
       "",
       "",
@@ -56,6 +60,7 @@ class _CustomerFormState extends State<CustomerForm> {
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) return "This info is required";
+        if (value.length != 10) return "Please use correct phone number";
         return null;
       },
       onChanged: (value) {
@@ -69,7 +74,7 @@ class _CustomerFormState extends State<CustomerForm> {
                 orElse: () => Customer(
                   "",
                   "",
-                  Address(
+                  custom.Address(
                     "",
                     "",
                     "",
@@ -186,11 +191,59 @@ class _CustomerFormState extends State<CustomerForm> {
   Widget buildSubmitButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: ElevatedButton(
+      child: MyElevatedButton(
         onPressed: () {
-          print("Summit form");
+          if (DataProvider.instance.currentOrder.entries.isEmpty) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("Information"),
+                titleTextStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+                content: Text(
+                    "Your cart is empty. Please go back to shop and add some items."),
+                contentTextStyle: TextStyle(fontSize: 16.0),
+                actions: [
+                  MyElevatedButton(
+                    message: "Okie",
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/', (route) => false);
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+
           if (formState.currentState!.validate()) {
-            // TODO: Implement submit order here
+            var submitedCustomer = Customer(
+              phoneNumberController.text,
+              nameController.text,
+              custom.Address(
+                provinceController.text,
+                districtController.text,
+                locatedPartController.text,
+              ),
+            );
+
+            if (submitedCustomer != currentCustomer) {
+              DataProvider.instance.writeCustomer(submitedCustomer);
+            }
+
+            DataProvider.instance.currentOrder.customer = submitedCustomer;
+            DataProvider.instance.currentOrder.date = DateTime.now();
+            DataProvider.instance.currentOrder.id =
+                generateRandomString(5) + DateTime.now().toString();
+
+            DataProvider.instance.writeOrder(
+              DataProvider.instance.currentOrder,
+            );
+
+            DataProvider.instance.resetCurrentOrder();
+
             Navigator.of(context).push(
               FadePageRoute(
                 SuccessOrder(),
@@ -198,30 +251,7 @@ class _CustomerFormState extends State<CustomerForm> {
             );
           }
         },
-        child: Text('Order'),
-        style: ButtonStyle(
-          padding: MaterialStateProperty.all(
-            EdgeInsets.all(
-              15.0,
-            ),
-          ),
-          textStyle: MaterialStateProperty.all(TextStyle(
-            fontSize: 16.0,
-          )),
-          foregroundColor: MaterialStateProperty.all(
-            Colors.white,
-          ),
-          backgroundColor: MaterialStateProperty.resolveWith(
-            (states) {
-              if (states.contains(MaterialState.hovered))
-                return Colors.amber[400];
-              if (states.contains(MaterialState.focused) ||
-                  states.contains(MaterialState.pressed))
-                return Colors.amber[60];
-              return Colors.amber;
-            },
-          ),
-        ),
+        message: 'Order',
       ),
     );
   }

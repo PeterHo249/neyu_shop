@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/order_entry.dart';
+import 'package:neyu_shop/utils/utilities.dart';
 import 'package:neyu_shop/views/elements/amount_picker.dart';
 
 class OrderEntryTile extends StatelessWidget {
@@ -12,14 +11,6 @@ class OrderEntryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var priceString = FlutterMoneyFormatter(
-      amount: orderEntry.product.price,
-      settings: MoneyFormatterSettings(
-        thousandSeparator: '.',
-        decimalSeparator: ',',
-      ),
-    ).output.withoutFractionDigits;
-
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
@@ -43,7 +34,7 @@ class OrderEntryTile extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              'Price: $priceString',
+              'Price: ${formatNumber(orderEntry.product.price)}',
               style: TextStyle(
                 fontSize: 16.0,
               ),

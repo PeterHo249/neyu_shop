@@ -63,6 +63,25 @@ class DataProvider {
     currentOrder.removeItem(item: item);
   }
 
+  void resetCurrentOrder() {
+    currentOrder = Order(
+      generateRandomString(10),
+      Customer(
+        generateRandomString(10),
+        generateRandomString(10),
+        Address(
+          generateRandomString(10),
+          generateRandomString(10),
+          generateRandomString(10),
+        ),
+      ),
+      [],
+      0,
+      DateTime.now(),
+      "Đang mua hàng",
+    );
+  }
+
   Stream<DocumentSnapshot> getBlogpost(String blogId) {
     return FirebaseFirestore.instance
         .collection('blogposts')
@@ -84,5 +103,39 @@ class DataProvider {
           ),
         )
         .toList();
+  }
+
+  writeCustomer(Customer customer) async {
+    var batch = FirebaseFirestore.instance.batch();
+    var docRef = FirebaseFirestore.instance
+        .collection("customers")
+        .doc(customer.phoneNumber);
+
+    batch.set(
+      docRef,
+      json.decode(
+        json.encode(
+          customer,
+        ),
+      ),
+    );
+
+    await batch.commit().catchError((error) => print("Error: $error"));
+  }
+
+  writeOrder(Order order) async {
+    var batch = FirebaseFirestore.instance.batch();
+    var docRef = FirebaseFirestore.instance.collection("orders").doc(order.id);
+
+    batch.set(
+      docRef,
+      json.decode(
+        json.encode(
+          order,
+        ),
+      ),
+    );
+
+    await batch.commit().catchError((error) => print("Error: $error"));
   }
 }
