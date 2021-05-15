@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/product.dart';
+import 'package:neyu_shop/utils/utilities.dart';
 import 'package:neyu_shop/utils/window_breakpoint.dart';
 import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
 import 'package:neyu_shop/views/elements/amount_picker.dart';
@@ -73,15 +72,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         getWindowType(MediaQuery.of(context).size.width) != WindowType.large
             ? MediaQuery.of(context).size.width
             : MediaQuery.of(context).size.width * 0.5;
-    var priceString = FlutterMoneyFormatter(
-      amount: widget.product.price,
-      settings: MoneyFormatterSettings(
-        thousandSeparator: '.',
-        decimalSeparator: ',',
-        fractionDigits: 0,
-        symbol: 'VND',
-      ),
-    ).output.symbolOnRight;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +93,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Text(
-            '$priceString',
+            '${formatNumber(widget.product.price)}',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w200,

@@ -8,7 +8,12 @@ import 'package:neyu_shop/views/elements/main_app_bar.dart';
 import 'package:neyu_shop/views/elements/order_entry_tile.dart';
 import 'package:provider/provider.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +22,6 @@ class CartPage extends StatelessWidget {
   }
 
   Widget _buildCartPageContent(BuildContext context) {
-    // TODO: Need some style
     List<Widget> contentParts = [];
     if (DataProvider.instance.currentOrder.entries.length == 0)
       contentParts.add(
@@ -26,6 +30,36 @@ class CartPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: EmptyDataIndicator(
               message: "Empty cart",
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                },
+                child: Text('Back to shop'),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.all(
+                      15.0,
+                    ),
+                  ),
+                  textStyle: MaterialStateProperty.all(TextStyle(
+                    fontSize: 16.0,
+                  )),
+                  foregroundColor: MaterialStateProperty.all(
+                    Colors.white,
+                  ),
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                    (states) {
+                      if (states.contains(MaterialState.hovered))
+                        return Colors.amber[400];
+                      if (states.contains(MaterialState.focused) ||
+                          states.contains(MaterialState.pressed))
+                        return Colors.amber[60];
+                      return Colors.amber;
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
         ),

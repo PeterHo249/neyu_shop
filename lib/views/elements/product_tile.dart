@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:neyu_shop/controllers/data_provider.dart';
 import 'package:neyu_shop/models/product.dart';
+import 'package:neyu_shop/utils/utilities.dart';
 import 'package:neyu_shop/views/elements/FadePageRoute.dart';
 import 'package:neyu_shop/views/elements/add_to_cart_button.dart';
 import 'package:neyu_shop/views/product_detail.dart';
@@ -23,14 +22,6 @@ class _ProductTileState extends State<ProductTile> {
 
   @override
   Widget build(BuildContext context) {
-    var priceString = FlutterMoneyFormatter(
-      amount: product.price,
-      settings: MoneyFormatterSettings(
-        thousandSeparator: '.',
-        decimalSeparator: ',',
-      ),
-    ).output.withoutFractionDigits;
-
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
@@ -86,7 +77,7 @@ class _ProductTileState extends State<ProductTile> {
                 Container(
                   width: constraints.maxWidth,
                   child: Text(
-                    '$priceString',
+                    '${formatNumber(product.price)}',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w200,

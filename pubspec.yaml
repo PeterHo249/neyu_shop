@@ -26,7 +26,6 @@ dependencies:
   carousel_slider: ^3.0.0
   json_annotation: ^4.0.1
   badges: ^1.2.0
-  flutter_money_formatter: ^0.8.3
   firebase_core: ^1.0.2
   cloud_firestore: ^1.0.3
   firebase_storage: ^8.0.1
